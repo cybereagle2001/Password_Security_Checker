@@ -200,7 +200,7 @@ const App = () => {
           {/* Password Checker */}
           <div className="card">
             <div className="card-header">
-              <Shield color={var(--color-primary)} size={20} />
+              <Shield color="#2563eb" size={20} />
               <h3>Password Checker</h3>
             </div>
 
