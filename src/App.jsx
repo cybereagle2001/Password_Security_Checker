@@ -387,12 +387,14 @@ const App = () => {
 
       {/* Footer */}
       <footer className="footer">
-        <p>
-          <Lock size={18} /> pass.<span>imedrasphere</span>.com — Secure your digital life
-        </p>
-        <small>
-          © {new Date().getFullYear()} IMEDRA SPHERE. All rights reserved.
-        </small>
+        <div className="container footer-content">
+          <p>
+            <Lock size={18} /> pass.<span>imedrasphere</span>.com — Secure your digital life
+          </p>
+          <small>
+            © {new Date().getFullYear()} IMEDRA SPHERE. All rights reserved.
+          </small>
+        </div>
       </footer>
     </>
   );
