@@ -1,8 +1,4 @@
 /* === Header === */
-header {
-  background: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
 .header-content {
   display: flex;
   justify-content: space-between;
@@ -28,7 +24,7 @@ header {
   font-size: 0.95rem;
 }
 
-/* === Hero Section === */
+/* === Hero === */
 .hero {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -43,22 +39,22 @@ header {
   margin: 0.75rem auto 0;
 }
 
-/* === Input Group === */
-.input-group {
-  margin-bottom: 1.5rem;
+/* === Input Field === */
+.input-field {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  font-size: 1rem;
 }
-.input-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #374151;
+.input-field:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.3);
 }
-.input-wrapper {
-  position: relative;
-}
-.input-wrapper input {
-  padding-right: 60px;
-}
+
+/* === Icon Buttons === */
 .icon-btn, .copy-btn {
   position: absolute;
   top: 50%;
@@ -86,19 +82,8 @@ header {
   align-items: center;
   margin-bottom: 0.5rem;
 }
-.strength-label-score {
-  font-weight: 600;
-}
-.strength-weak { color: #ef4444; }
-.strength-fair { color: #f59e0b; }
-.strength-good { color: #3b82f6; }
-.strength-strong { color: #10b981; }
 
-/* === Checklist & Buttons === */
-.checklist {
-  list-style: none;
-  margin-top: 1rem;
-}
+/* === Checklist === */
 .checklist li {
   display: flex;
   align-items: center;
@@ -106,9 +91,10 @@ header {
   margin: 6px 0;
   font-size: 1rem;
 }
-.pass svg { color: #047857; }
-.fail svg { color: #b91c1c; }
+.pass { color: #047857; }
+.fail { color: #b91c1c; }
 
+/* === Checkbox Grid === */
 .checkbox-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -130,16 +116,14 @@ header {
   cursor: pointer;
 }
 
+/* === Button Group === */
 .button-group {
   display: flex;
   gap: 12px;
   margin-top: 1.5rem;
 }
 
-/* === Tips === */
-.tips-section {
-  margin-top: 2rem;
-}
+/* === Tips Card === */
 .tip-card {
   padding: 1.25rem;
   background: #fafafa;
@@ -159,7 +143,7 @@ header {
   line-height: 1.5;
 }
 
-/* === Responsive Adjustments === */
+/* === Responsive === */
 @media (max-width: 600px) {
   .header-content {
     flex-direction: column;
