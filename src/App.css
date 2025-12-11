@@ -1,172 +1,178 @@
-/* === Global Reset === */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, sans-serif;
-}
-
-/* === Body === */
-body {
-  background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
-  min-height: 100vh;
-  color: #1f2937;
-}
-
-/* === Wrapper === */
-.container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 1.2rem;
-  max-width: 1200px;
-}
-
-/* Headings */
-h1, h2, h3, h4 {
-  line-height: 1.2;
-}
-
-/* Responsive title sizes */
-h2 {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-}
-p {
-  font-size: clamp(0.95rem, 2vw, 1.2rem);
-}
-
-/* === Cards === */
-.card {
+/* === Header === */
+header {
   background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  border: 1px solid #e5e7eb;
-  transition: 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
-
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 0;
 }
-
-/* === Input === */
-input {
-  width: 100%;
-  padding: 12px 15px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-  font-size: 1rem;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-input:focus {
-  border-color: #2563eb;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.3);
-}
-
-/* Inputs inside generator and checker */
-.input-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-/* === Buttons === */
-.btn {
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: 0.2s ease-in-out;
-  font-size: 1rem;
-}
-
-.btn-primary {
+.logo-icon {
   background: #2563eb;
-  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.btn-primary:hover {
-  background: #1d4ed8;
+.tagline {
+  color: #6b7280;
+  font-size: 0.95rem;
 }
 
-.btn-gray {
-  background: white;
-  border: 1px solid #d1d5db;
+/* === Hero Section === */
+.hero {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.hero h2 {
+  font-weight: 800;
+  color: #111827;
+}
+.hero p {
+  color: #4b5563;
+  max-width: 600px;
+  margin: 0.75rem auto 0;
+}
+
+/* === Input Group === */
+.input-group {
+  margin-bottom: 1.5rem;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
   color: #374151;
 }
-.btn-gray:hover {
+.input-wrapper {
+  position: relative;
+}
+.input-wrapper input {
+  padding-right: 60px;
+}
+.icon-btn, .copy-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+}
+.icon-btn:hover, .copy-btn:hover {
   background: #f3f4f6;
 }
-
-/* === Strength Meter === */
-.strength-bar {
-  width: 100%;
-  height: 10px;
-  background: #e5e7eb;
-  border-radius: 9999px;
+.copy-btn {
+  right: 50px;
 }
-.strength-fill {
-  height: 100%;
-  border-radius: 9999px;
-  transition: 0.4s ease;
+.icon-btn:last-of-type {
+  right: 12px;
 }
-.strength-weak { background: #ef4444; }
-.strength-fair { background: #f59e0b; }
-.strength-good { background: #3b82f6; }
-.strength-strong { background: #10b981; }
 
-/* === Checklist === */
+/* === Strength Label === */
+.strength-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.strength-label-score {
+  font-weight: 600;
+}
+.strength-weak { color: #ef4444; }
+.strength-fair { color: #f59e0b; }
+.strength-good { color: #3b82f6; }
+.strength-strong { color: #10b981; }
+
+/* === Checklist & Buttons === */
+.checklist {
+  list-style: none;
+  margin-top: 1rem;
+}
 .checklist li {
   display: flex;
   align-items: center;
   gap: 8px;
   margin: 6px 0;
-  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  font-size: 1rem;
 }
-.pass { color: #047857; }
-.fail { color: #b91c1c; }
+.pass svg { color: #047857; }
+.fail svg { color: #b91c1c; }
 
-/* === Two-column Layout (responsive) === */
-.responsive-grid {
+.checkbox-grid {
   display: grid;
-  gap: 20px;
   grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
 }
-
-@media (min-width: 850px) {
-  .responsive-grid {
-    grid-template-columns: repeat(2, 1fr);
+@media (min-width: 600px) {
+  .checkbox-grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
-
-/* === Tips section === */
-.tips-grid {
-  display: grid;
-  gap: 1.2rem;
-}
-@media (min-width: 700px) {
-  .tips-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* === Footer === */
-footer {
-  background: #1f2937;
-  color: white;
-  margin-top: 3rem;
-  padding: 2rem 1.5rem;
-  text-align: center;
-  font-size: clamp(0.8rem, 1.5vw, 1rem);
-}
-footer span {
-  color: #60a5fa;
-}
-
-/* === Mobile Icon Buttons === */
-.icon-btn {
-  background: none;
-  border: none;
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  padding: 5px;
+}
+.checkbox-item input {
+  cursor: pointer;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+
+/* === Tips === */
+.tips-section {
+  margin-top: 2rem;
+}
+.tip-card {
+  padding: 1.25rem;
+  background: #fafafa;
+}
+.tip-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.5rem;
+}
+.tip-card h4 {
+  font-size: 1.1rem;
+}
+.tip-card p {
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 600px) {
+  .header-content {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  .button-group {
+    flex-direction: column;
+  }
+  .copy-btn {
+    right: 44px;
+  }
+  .icon-btn:last-of-type {
+    right: 8px;
+  }
 }
