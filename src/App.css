@@ -1,162 +1,161 @@
-/* === Header === */
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 0;
-}
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.logo-icon {
-  background: #2563eb;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.tagline {
-  color: #6b7280;
-  font-size: 0.95rem;
+/* === Global Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
 }
 
-/* === Hero === */
-.hero {
-  text-align: center;
-  margin-bottom: 2.5rem;
+/* === Global Layout === */
+body {
+  background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
+  min-height: 100vh;
+  color: #1f2937;
 }
-.hero h2 {
-  font-weight: 800;
+
+/* Centering content */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* === Headers === */
+header {
+  background: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
   color: #111827;
 }
-.hero p {
-  color: #4b5563;
-  max-width: 600px;
-  margin: 0.75rem auto 0;
+
+header h1 span {
+  color: #2563eb;
 }
 
-/* === Input Field === */
-.input-field {
+/* === Cards === */
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+/* === Inputs === */
+input[type="text"],
+input[type="password"] {
   width: 100%;
-  padding: 12px 15px;
+  padding: 12px 16px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
   background: #f9fafb;
   font-size: 1rem;
+  transition: 0.2s;
 }
-.input-field:focus {
+
+input[type="text"]:focus,
+input[type="password"]:focus {
   border-color: #2563eb;
   outline: none;
   box-shadow: 0 0 0 3px rgba(37,99,235,0.3);
 }
 
-/* === Icon Buttons === */
-.icon-btn, .copy-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
+/* === Buttons === */
+.btn {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
-  padding: 6px;
-  border-radius: 6px;
-}
-.icon-btn:hover, .copy-btn:hover {
-  background: #f3f4f6;
-}
-.copy-btn {
-  right: 50px;
-}
-.icon-btn:last-of-type {
-  right: 12px;
+  border: none;
+  transition: 0.2s ease-in-out;
 }
 
-/* === Strength Label === */
-.strength-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
+.btn-primary {
+  background: #2563eb;
+  color: white;
 }
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-gray {
+  background: white;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.btn-gray:hover {
+  background: #f3f4f6;
+}
+
+/* === Strength Bar === */
+.strength-bar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+/* Colors for strength */
+.strength-weak { background: #ef4444; }
+.strength-fair { background: #f59e0b; }
+.strength-good { background: #3b82f6; }
+.strength-strong { background: #10b981; }
 
 /* === Checklist === */
 .checklist li {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 6px 0;
-  font-size: 1rem;
-}
-.pass { color: #047857; }
-.fail { color: #b91c1c; }
-
-/* === Checkbox Grid === */
-.checkbox-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-  margin: 1.5rem 0;
-}
-@media (min-width: 600px) {
-  .checkbox-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-.checkbox-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-.checkbox-item input {
-  cursor: pointer;
-}
-
-/* === Button Group === */
-.button-group {
-  display: flex;
-  gap: 12px;
-  margin-top: 1.5rem;
-}
-
-/* === Tips Card === */
-.tip-card {
-  padding: 1.25rem;
-  background: #fafafa;
-}
-.tip-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 0.5rem;
-}
-.tip-card h4 {
-  font-size: 1.1rem;
-}
-.tip-card p {
-  color: #6b7280;
   font-size: 0.95rem;
-  line-height: 1.5;
 }
 
-/* === Responsive === */
-@media (max-width: 600px) {
-  .header-content {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
+.checklist li.pass {
+  color: #047857;
+}
+
+.checklist li.fail {
+  color: #b91c1c;
+}
+
+/* === Security tips grid === */
+.tips-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .tips-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
-  .button-group {
-    flex-direction: column;
-  }
-  .copy-btn {
-    right: 44px;
-  }
-  .icon-btn:last-of-type {
-    right: 8px;
-  }
+}
+
+/* === Footer === */
+footer {
+  background: #1f2937;
+  color: white;
+  margin-top: 3rem;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+footer span {
+  color: #60a5fa;
 }
