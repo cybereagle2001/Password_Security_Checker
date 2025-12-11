@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Shield, Lock, Eye, EyeOff, Copy, Check, AlertTriangle, Zap, RotateCcw } from 'lucide-react';
+import {
+  Shield, Lock, Eye, EyeOff, Copy, Check, AlertTriangle, Zap, RotateCcw,
+} from 'lucide-react';
 import './App.css';
 
 const App = () => {
@@ -13,7 +15,7 @@ const App = () => {
     hasLowercase: false,
     hasNumber: false,
     hasSpecialChar: false,
-    noCommonPatterns: false
+    noCommonPatterns: false,
   });
   const [strength, setStrength] = useState({ score: 0, label: 'Weak', color: 'strength-weak' });
   const [generatorConfig, setGeneratorConfig] = useState({
@@ -23,44 +25,53 @@ const App = () => {
     includeNumbers: true,
     includeSymbols: true,
     excludeSimilar: true,
-    excludeAmbiguous: false
+    excludeAmbiguous: false,
   });
 
   const commonPasswords = [
     'password', '123456', '123456789', 'qwerty', 'abc123', 'password123',
-    'admin', 'letmein', 'welcome', 'monkey', '1234567890'
+    'admin', 'letmein', 'welcome', 'monkey', '1234567890',
   ];
   const commonPatterns = [/123/, /abc/, /qwe/, /asd/, /zxc/, /!@#/, /@#$/];
 
   const calculateStrength = useCallback((pwd) => {
-    if (!pwd) return { score: 0, label: "Empty", color: "strength-weak" };
-    
+    if (!pwd) return { score: 0, label: 'Empty', color: 'strength-weak' };
+
     let score = 0;
 
+    // Length
     if (pwd.length >= 8) score += 2;
     if (pwd.length >= 10) score += 2;
     if (pwd.length >= 12) score += 2;
     if (pwd.length >= 14) score += 2;
 
+    // Diversity
     if (/[A-Z]/.test(pwd)) score += 2;
     if (/[a-z]/.test(pwd)) score += 2;
     if (/[0-9]/.test(pwd)) score += 2;
     if (/[^A-Za-z0-9]/.test(pwd)) score += 2;
 
+    // Common patterns
     const isCommon = commonPasswords.includes(pwd.toLowerCase()) ||
-                     commonPatterns.some(pattern => pattern.test(pwd));
-
+                     commonPatterns.some((pattern) => pattern.test(pwd));
     if (!isCommon) score += 2;
 
     const finalScore = Math.min(10, Math.floor(score / 2));
 
-    let label = "Weak";
-    let color = "strength-weak";
-
-    if (finalScore <= 3) { label = "Weak"; color = "strength-weak"; }
-    else if (finalScore <= 6) { label = "Fair"; color = "strength-fair"; }
-    else if (finalScore <= 8) { label = "Good"; color = "strength-good"; }
-    else { label = "Strong"; color = "strength-strong"; }
+    let label, color;
+    if (finalScore <= 3) {
+      label = 'Weak';
+      color = 'strength-weak';
+    } else if (finalScore <= 6) {
+      label = 'Fair';
+      color = 'strength-fair';
+    } else if (finalScore <= 8) {
+      label = 'Good';
+      color = 'strength-good';
+    } else {
+      label = 'Strong';
+      color = 'strength-strong';
+    }
 
     return { score: finalScore, label, color };
   }, []);
@@ -72,8 +83,9 @@ const App = () => {
       hasLowercase: /[a-z]/.test(pwd),
       hasNumber: /[0-9]/.test(pwd),
       hasSpecialChar: /[^A-Za-z0-9]/.test(pwd),
-      noCommonPatterns: !commonPasswords.includes(pwd.toLowerCase()) &&
-                        !commonPatterns.some(pattern => pattern.test(pwd))
+      noCommonPatterns:
+        !commonPasswords.includes(pwd.toLowerCase()) &&
+        !commonPatterns.some((pattern) => pattern.test(pwd)),
     });
   }, []);
 
@@ -83,35 +95,53 @@ const App = () => {
   }, [password, calculateStrength, updateCriteria]);
 
   const generatePassword = useCallback(() => {
-    const { length, includeUppercase, includeLowercase, includeNumbers, includeSymbols, excludeAmbiguous } = generatorConfig;
+    const {
+      length,
+      includeUppercase,
+      includeLowercase,
+      includeNumbers,
+      includeSymbols,
+      excludeSimilar,
+      excludeAmbiguous,
+    } = generatorConfig;
 
     let charset = '';
-    if (includeLowercase) charset += 'abcdefghjkmnpqrstuvwxyz';
-    if (includeUppercase) charset += 'ABCDEFGHJKMNPQRSTUVWXYZ';
-    if (includeNumbers) charset += '23456789';
-
+    const lower = 'abcdefghjkmnpqrstuvwxyz';
+    const upper = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+    const nums = '23456789';
     let symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-    if (excludeAmbiguous) symbols = symbols.replace(/[{}|;:,.<>?]/g, '');
 
+    if (excludeAmbiguous) {
+      symbols = symbols.replace(/[{}|;:,.<>?]/g, '');
+    }
+
+    if (includeLowercase) charset += lower;
+    if (includeUppercase) charset += upper;
+    if (includeNumbers) charset += nums;
     if (includeSymbols) charset += symbols;
 
+    // Build required chars
     let pwd = '';
-    const requiredSets = [];
+    const required = [];
+    if (includeLowercase) required.push(lower);
+    if (includeUppercase) required.push(upper);
+    if (includeNumbers) required.push(nums);
+    if (includeSymbols) required.push(symbols);
 
-    if (includeLowercase) requiredSets.push('abcdefghjkmnpqrstuvwxyz');
-    if (includeUppercase) requiredSets.push('ABCDEFGHJKMNPQRSTUVWXYZ');
-    if (includeNumbers) requiredSets.push('23456789');
-    if (includeSymbols) requiredSets.push(symbols);
-
-    requiredSets.forEach(set => {
+    required.forEach((set) => {
       pwd += set.charAt(Math.floor(Math.random() * set.length));
     });
 
+    // Fill remaining
     for (let i = pwd.length; i < length; i++) {
       pwd += charset.charAt(Math.floor(Math.random() * charset.length));
     }
 
-    pwd = pwd.split('').sort(() => 0.5 - Math.random()).join('');
+    // Shuffle
+    pwd = pwd
+      .split('')
+      .sort(() => 0.5 - Math.random())
+      .join('');
 
     setGeneratedPassword(pwd);
     setPassword(pwd);
@@ -123,67 +153,77 @@ const App = () => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch (err) {
-      console.error("Copy failed", err);
+      console.error('Copy failed', err);
     }
+  };
+
+  const resetAll = () => {
+    setPassword('');
+    setGeneratedPassword('');
+    setCopied(false);
   };
 
   return (
     <>
       {/* Header */}
       <header>
-        <div className="container" style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
-            <div style={{background:"#2563eb",padding:"8px",borderRadius:"10px"}}>
-              <Lock color="white" size={24} />
+        <div className="container">
+          <div className="header-content">
+            <div className="logo">
+              <div className="logo-icon">
+                <Lock color="white" size={24} />
+              </div>
+              <h1>pass.<span>imedrasphere</span></h1>
             </div>
-            <h1>pass.<span>imedrasphere</span></h1>
+            <div className="tagline">Your trusted password security companion</div>
           </div>
-          <div style={{color:"#6b7280"}}>Your trusted password security companion</div>
         </div>
       </header>
 
       {/* Main */}
       <main className="container">
-        <div style={{textAlign:"center",marginBottom:"40px"}}>
-          <h2 style={{fontSize:"2.2rem",fontWeight:"bold"}}>Password Security Checker & Generator</h2>
-          <p style={{fontSize:"1.2rem",color:"#6b7280",marginTop:"10px"}}>
-            Analyze your password strength and generate secure, random passwords.
-          </p>
+        <div className="hero">
+          <h2>Password Security Checker & Generator</h2>
+          <p>Analyze your password strength and generate secure, random passwords.</p>
         </div>
 
         <div className="responsive-grid">
-          
           {/* Password Checker */}
           <div className="card">
-            <h3 style={{display:"flex",alignItems:"center",gap:"10px"}}>
-              <Shield color="#2563eb" />
+            <h3 className="card-title">
+              <Shield color="#2563eb" size={20} />
               Password Checker
             </h3>
 
-            <div style={{marginTop:"20px"}}>
-              <label>Password</label>
-              <div style={{position:"relative"}}>
+            <div className="input-group">
+              <label htmlFor="checker-password">Password</label>
+              <div className="input-wrapper">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  id="checker-password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={(e)=>setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Type your password here..."
                 />
                 <button
-                  onClick={()=>setShowPassword(!showPassword)}
-                  style={{position:"absolute",right:"10px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer"}}
+                  type="button"
+                  className="icon-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeOff size={20} color="#6b7280"/> : <Eye size={20} color="#6b7280"/>}
+                  {showPassword ? <EyeOff size={20} color="#6b7280" /> : <Eye size={20} color="#6b7280" />}
                 </button>
               </div>
             </div>
 
-            {/* Strength meter */}
-            <div style={{marginTop:"20px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:"5px"}}>
+            {/* Strength Meter */}
+            <div className="input-group">
+              <div className="strength-label">
                 <span>Password Strength</span>
-                <span>{strength.label} ({strength.score}/10)</span>
+                <span className={`strength-label-score strength-${strength.color.split('-')[1]}`}>
+                  {strength.label} ({strength.score}/10)
+                </span>
               </div>
-
               <div className="strength-bar">
                 <div
                   className={`strength-fill ${strength.color}`}
@@ -192,68 +232,71 @@ const App = () => {
               </div>
             </div>
 
-            {/* Requirements */}
-            <ul className="checklist" style={{marginTop:"20px"}}>
+            {/* Checklist */}
+            <ul className="checklist">
               {[
-                { label: "At least 8 characters", pass: passwordCriteria.minLength },
-                { label: "Contains uppercase letters", pass: passwordCriteria.hasUppercase },
-                { label: "Contains lowercase letters", pass: passwordCriteria.hasLowercase },
-                { label: "Contains numbers", pass: passwordCriteria.hasNumber },
-                { label: "Contains special characters", pass: passwordCriteria.hasSpecialChar },
-                { label: "Avoids common patterns", pass: passwordCriteria.noCommonPatterns }
-              ].map((item, i)=>(
-                <li key={i} className={item.pass ? "pass" : "fail"}>
-                  {item.pass ? <Check size={16} /> : <AlertTriangle size={16}/>}
-                  {item.label}
+                { key: 'minLength', label: 'At least 8 characters', pass: passwordCriteria.minLength },
+                { key: 'hasUppercase', label: 'Contains uppercase letters', pass: passwordCriteria.hasUppercase },
+                { key: 'hasLowercase', label: 'Contains lowercase letters', pass: passwordCriteria.hasLowercase },
+                { key: 'hasNumber', label: 'Contains numbers', pass: passwordCriteria.hasNumber },
+                { key: 'hasSpecialChar', label: 'Contains special characters', pass: passwordCriteria.hasSpecialChar },
+                { key: 'noCommonPatterns', label: 'Avoids common patterns', pass: passwordCriteria.noCommonPatterns },
+              ].map((item) => (
+                <li key={item.key} className={item.pass ? 'pass' : 'fail'}>
+                  {item.pass ? <Check size={16} /> : <AlertTriangle size={16} />}
+                  <span>{item.label}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Generator */}
+          {/* Password Generator */}
           <div className="card">
-            <h3 style={{display:"flex",alignItems:"center",gap:"10px"}}>
-              <Zap color="#16a34a" />
+            <h3 className="card-title">
+              <Zap color="#16a34a" size={20} />
               Password Generator
             </h3>
 
-            <div style={{marginTop:"20px"}}>
-              <label>Generated Password</label>
-              <div style={{position:"relative"}}>
+            <div className="input-group">
+              <label htmlFor="generated-password">Generated Password</label>
+              <div className="input-wrapper">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  id="generated-password"
+                  type={showPassword ? 'text' : 'password'}
                   value={generatedPassword || password}
                   readOnly
                 />
                 <button
-                  className="btn-gray"
+                  type="button"
+                  className="copy-btn"
                   onClick={copyToClipboard}
-                  style={{position:"absolute",right:"50px",top:"50%",transform:"translateY(-50%)"}}
+                  aria-label="Copy to clipboard"
                 >
-                  {copied ? <Check color="green"/> : <Copy />}
+                  {copied ? <Check size={18} color="#10b981" /> : <Copy size={18} />}
                 </button>
                 <button
-                  style={{position:"absolute",right:"10px",top:"50%",transform:"translateY(-50%)",background:"none",border:"none"}}
-                  onClick={()=>setShowPassword(!showPassword)}
+                  type="button"
+                  className="icon-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeOff size={20}/> : <Eye size={20}/>}
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
             </div>
 
-            <div style={{marginTop:"20px"}}>
+            <div className="input-group">
               <label>Password Length: {generatorConfig.length}</label>
               <input
                 type="range"
                 min="8"
                 max="32"
                 value={generatorConfig.length}
-                onChange={(e)=>setGeneratorConfig({...generatorConfig, length:parseInt(e.target.value)})}
-                style={{width:"100%"}}
+                onChange={(e) => setGeneratorConfig({ ...generatorConfig, length: parseInt(e.target.value, 10) })}
               />
             </div>
 
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"10px",marginTop:"20px"}}>
+            <div className="checkbox-grid">
               {[
                 { key: 'includeUppercase', label: 'Uppercase (A-Z)' },
                 { key: 'includeLowercase', label: 'Lowercase (a-z)' },
@@ -261,73 +304,71 @@ const App = () => {
                 { key: 'includeSymbols', label: 'Symbols (!@#$%)' },
                 { key: 'excludeSimilar', label: 'Exclude similar (i, l, 1, O, 0)' },
                 { key: 'excludeAmbiguous', label: 'Exclude ambiguous chars' },
-              ].map(option => (
-                <label key={option.key} style={{display:"flex",alignItems:"center",gap:"8px"}}>
+              ].map((option) => (
+                <label key={option.key} className="checkbox-item">
                   <input
                     type="checkbox"
                     checked={generatorConfig[option.key]}
-                    onChange={(e)=>setGeneratorConfig({...generatorConfig, [option.key]:e.target.checked})}
+                    onChange={(e) => setGeneratorConfig({ ...generatorConfig, [option.key]: e.target.checked })}
                   />
-                  {option.label}
+                  <span>{option.label}</span>
                 </label>
               ))}
             </div>
 
-            <div style={{display:"flex",gap:"10px",marginTop:"20px"}}>
+            <div className="button-group">
               <button className="btn btn-primary" onClick={generatePassword}>
-                <Zap size={18} style={{marginRight:"5px"}}/> Generate
+                <Zap size={18} />
+                Generate Password
               </button>
-              <button className="btn btn-gray" onClick={()=>setPassword("")}>
-                <RotateCcw size={18}/>
+              <button className="btn btn-gray" onClick={resetAll}>
+                <RotateCcw size={18} />
               </button>
             </div>
           </div>
-
         </div>
 
         {/* Tips */}
-        <div className="card" style={{marginTop:"30px"}}>
+        <div className="card tips-section">
           <h3>Password Security Best Practices</h3>
-
-          <div className="tips-grid" style={{marginTop:"20px"}}>
+          <div className="tips-grid">
             {[
               {
-                title: "Use Unique Passwords",
-                description: "Never reuse passwords across accounts.",
-                icon: <Lock color="#2563eb" />
+                title: 'Use Unique Passwords',
+                description: 'Never reuse passwords across accounts.',
+                icon: <Lock color="#2563eb" size={20} />,
               },
               {
-                title: "Enable 2FA",
-                description: "Add an extra layer of security.",
-                icon: <Shield color="#16a34a" />
+                title: 'Enable 2FA',
+                description: 'Add an extra layer of security.',
+                icon: <Shield color="#16a34a" size={20} />,
               },
               {
-                title: "Use a Password Manager",
-                description: "Store passwords securely.",
-                icon: <Zap color="#8b5cf6" />
+                title: 'Use a Password Manager',
+                description: 'Store passwords securely.',
+                icon: <Zap color="#8b5cf6" size={20} />,
               },
-            ].map((tip, i)=>(
-              <div key={i} className="card" style={{padding:"15px"}}>
-                <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
+            ].map((tip, i) => (
+              <div key={i} className="card tip-card">
+                <div className="tip-header">
                   {tip.icon}
                   <h4>{tip.title}</h4>
                 </div>
-                <p style={{color:"#6b7280",fontSize:"0.9rem",marginTop:"5px"}}>{tip.description}</p>
+                <p>{tip.description}</p>
               </div>
             ))}
           </div>
-
         </div>
       </main>
 
       {/* Footer */}
       <footer>
-        <p>
-          <Lock size={18}/> pass.<span>imedrasphere</span>.com — Secure your digital life
-        </p>
-        <small style={{color:"#9ca3af"}}>
-          © {new Date().getFullYear()} IMEDRASphere. All rights reserved.
-        </small>
+        <div className="container">
+          <p>
+            <Lock size={18} /> pass.<span>imedrasphere</span>.com — Secure your digital life
+          </p>
+          <small>© {new Date().getFullYear()} IMEDRASphere. All rights reserved.</small>
+        </div>
       </footer>
     </>
   );
