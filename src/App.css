@@ -6,34 +6,32 @@
   font-family: system-ui, sans-serif;
 }
 
-/* === Global Layout === */
+/* === Body === */
 body {
   background: linear-gradient(to bottom right, #f9fafb, #f3f4f6);
   min-height: 100vh;
   color: #1f2937;
 }
 
-/* Centering content */
+/* === Wrapper === */
 .container {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 1.2rem;
+  max-width: 1200px;
 }
 
-/* === Headers === */
-header {
-  background: white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+/* Headings */
+h1, h2, h3, h4 {
+  line-height: 1.2;
 }
 
-header h1 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #111827;
+/* Responsive title sizes */
+h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
 }
-
-header h1 span {
-  color: #2563eb;
+p {
+  font-size: clamp(0.95rem, 2vw, 1.2rem);
 }
 
 /* === Cards === */
@@ -43,30 +41,33 @@ header h1 span {
   padding: 1.5rem;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   border: 1px solid #e5e7eb;
-  transition: all 0.2s ease-in-out;
+  transition: 0.2s;
 }
 
 .card:hover {
+  transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.12);
 }
 
-/* === Inputs === */
-input[type="text"],
-input[type="password"] {
+/* === Input === */
+input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 15px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
   background: #f9fafb;
   font-size: 1rem;
-  transition: 0.2s;
 }
-
-input[type="text"]:focus,
-input[type="password"]:focus {
+input:focus {
   border-color: #2563eb;
   outline: none;
   box-shadow: 0 0 0 3px rgba(37,99,235,0.3);
+}
+
+/* Inputs inside generator and checker */
+.input-wrapper {
+  position: relative;
+  width: 100%;
 }
 
 /* === Buttons === */
@@ -77,13 +78,13 @@ input[type="password"]:focus {
   cursor: pointer;
   border: none;
   transition: 0.2s ease-in-out;
+  font-size: 1rem;
 }
 
 .btn-primary {
   background: #2563eb;
   color: white;
 }
-
 .btn-primary:hover {
   background: #1d4ed8;
 }
@@ -93,27 +94,22 @@ input[type="password"]:focus {
   border: 1px solid #d1d5db;
   color: #374151;
 }
-
 .btn-gray:hover {
   background: #f3f4f6;
 }
 
-/* === Strength Bar === */
+/* === Strength Meter === */
 .strength-bar {
   width: 100%;
   height: 10px;
   background: #e5e7eb;
   border-radius: 9999px;
-  overflow: hidden;
 }
-
 .strength-fill {
   height: 100%;
   border-radius: 9999px;
-  transition: width 0.4s ease;
+  transition: 0.4s ease;
 }
-
-/* Colors for strength */
 .strength-weak { background: #ef4444; }
 .strength-fair { background: #f59e0b; }
 .strength-good { background: #3b82f6; }
@@ -124,24 +120,31 @@ input[type="password"]:focus {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.95rem;
+  margin: 6px 0;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+}
+.pass { color: #047857; }
+.fail { color: #b91c1c; }
+
+/* === Two-column Layout (responsive) === */
+.responsive-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
 }
 
-.checklist li.pass {
-  color: #047857;
+@media (min-width: 850px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.checklist li.fail {
-  color: #b91c1c;
-}
-
-/* === Security tips grid === */
+/* === Tips section === */
 .tips-grid {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.2rem;
 }
-
-@media (min-width: 768px) {
+@media (min-width: 700px) {
   .tips-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -154,8 +157,16 @@ footer {
   margin-top: 3rem;
   padding: 2rem 1.5rem;
   text-align: center;
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
 }
-
 footer span {
   color: #60a5fa;
+}
+
+/* === Mobile Icon Buttons === */
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
 }
