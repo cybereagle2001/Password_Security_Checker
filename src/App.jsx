@@ -151,7 +151,7 @@ const App = () => {
           </p>
         </div>
 
-        <div style={{display:"grid",gap:"20px",gridTemplateColumns:"1fr 1fr"}}>
+        <div className="responsive-grid">
           
           {/* Password Checker */}
           <div className="card">
